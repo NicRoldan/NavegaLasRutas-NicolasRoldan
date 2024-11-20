@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product }) => {
+  const { addToCart } = useContext(CartContext);
+
   return (
-    <div className="card m-2" style={{ width: '18rem' }}>
-      {/* Imagen del producto */}
-      <img src={product.image} className="card-img-top" alt={product.name} />
-
+    <div className="card m-3 shadow-sm" style={{ width: '18rem' }}>
+      <Link to={`/product/${product.id}`} className="text-decoration-none">
+        <img
+          src={product.image}
+          className="card-img-top"
+          alt={product.name}
+          style={{ height: '200px', objectFit: 'cover' }}
+        />
+      </Link>
       <div className="card-body">
-        {/* Título del producto */}
-        <h5 className="card-title">{product.name}</h5>
-
-        {/* Descripción o precio del producto */}
-        <p className="card-text text-danger fw-bold">${product.price.toFixed(2)}</p>
-
-        {/* Botón para agregar al carrito */}
-        <button onClick={() => onAddToCart(product)} className="btn btn-primary w-100">
+        <h5 className="card-title text-center">{product.name}</h5>
+        <p className="card-text text-center text-danger fw-bold">${product.price.toFixed(2)}</p>
+        <button
+          onClick={() => addToCart(product)}
+          className="btn btn-primary w-100"
+        >
           Agregar al Carrito
         </button>
       </div>

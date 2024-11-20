@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "name": "Cartera Tejida",
+      "price": 3350,
+      "pricePerUnit": 9571.43,
+      "image": "https://http2.mlstatic.com/D_NQ_NP_2X_936203-MLA76974182254_062024-T.webp",
+      "category": "tejidos"
+    },
+    {
+      "id": 2,
+      "name": "Muñecos Artesanales",
+      "price": 4500,
+      "pricePerUnit": 13000,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9euMtfCTajWwIamOmdhQuPOkHEi6Hq1j6Sg&s",
+      "category": "artesanias"
+    },
+    {
+      "id": 3,
+      "name": "Chaleco Tejido",
+      "price": 7000,
+      "pricePerUnit": 13000,
+      "image": "https://http2.mlstatic.com/D_NQ_NP_2X_924256-MLA77548428508_072024-T.webp",
+      "category": "tejidos"
+    }
+  ]
+  

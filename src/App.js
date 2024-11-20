@@ -1,48 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
 import NavBar from './components/NavBar';
 import ItemListContainer from './components/ItemListContainer';
-import ProductCard from './components/ProductCard';
+import ItemDetailContainer from './components/ItemDetailContainer';
+import CartView from './components/CartView';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const [cart, setCart] = useState([]);
-  const products = [
-    {
-      id: 1,
-      name: 'Crema De Leche Doble Tregar 350',
-      price: 3350,
-      pricePerUnit: 9571.43,
-      image: 'https://http2.mlstatic.com/D_NQ_NP_2X_936203-MLA76974182254_062024-T.webp',
-    },
-    {
-      id: 2,
-      name: 'Otro Producto Ejemplo',
-      price: 4500,
-      pricePerUnit: 13000,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9euMtfCTajWwIamOmdhQuPOkHEi6Hq1j6Sg&s',
-    },
-    {
-      id: 3,
-      name: 'Otro Producto Ejemplo',
-      price: 7000,
-      pricePerUnit: 13000,
-      image: 'https://http2.mlstatic.com/D_NQ_NP_2X_924256-MLA77548428508_072024-T.webp',
-    },
-  ];
+  const [products, setProducts] = useState([]);
 
-  const addToCart = (product) => {
-    setCart([...cart, product]);
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/data/products.json');
+        if (!response.ok) {
+          throw new Error('No se pudo cargar el archivo JSON.');
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error al cargar los productos:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
-    <div>
-      <NavBar cartCount={cart.length} />
-      <ItemListContainer greeting="¡Bienvenidos a la tienda de Tejedarias!" />
-      <div className="container d-flex flex-wrap justify-content-center">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
-        ))}
-      </div>
-    </div>
+    <CartProvider>
+      <Router>
+        <NavBar />
+        <Routes>
+          <Route
+            path="/"
+            element={<ItemListContainer greeting="¡Bienvenidos a la tienda de Tejedarias!" products={products} />}
+          />
+          <Route
+            path="/category/:categoryId"
+            element={<ItemListContainer greeting="Productos filtrados por categoría" products={products} />}
+          />
+          <Route
+            path="/product/:productId"
+            element={<ItemDetailContainer products={products} />}
+          />
+          <Route path="/cart" element={<CartView />} />
+          <Route path="*" element={<h2>Página no encontrada (404)</h2>} />
+        </Routes>
+        {/* Contenedor de notificaciones */}
+        <ToastContainer position="top-right" autoClose={3000} />
+      </Router>
+    </CartProvider>
   );
 };
 
